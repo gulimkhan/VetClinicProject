@@ -1,42 +1,104 @@
-package com.gulimkhan.vetclinic;
+package com.gulimkhan;
+
+import java.util.ArrayList;
+import java.util.Scanner;
 
 public class Main {
+    private static ArrayList<Pet> pets = new ArrayList<>();
+    private static Scanner scanner = new Scanner(System.in);
+
     public static void main(String[] args) {
-        System.out.println("=== Veterinary Clinic Management System ===\n");
+        // Test data
+        pets.add(new Cat("Barsik", 3, "Cat", "Aida", true));
+        pets.add(new Dog("Sharik", 5, "Dog", "Asel", false));
 
-        // Create Pet objects
-        Pet pet1 = new Pet(101, "Bella", "Dog", 3, "Alice");
-        Pet pet2 = new Pet(102, "Milo", "Cat", 1, "Bob");
-        Pet pet3 = new Pet(103, "Charlie", "Parrot", 8, "Adam");
+        boolean running = true;
+        while (running) {
+            displayMenu();
+            int choice = scanner.nextInt();
+            scanner.nextLine(); // consume newline
 
-        // Create Owner objects
-        Owner owner1 = new Owner(201, "Alice", "+77011234567", 2);
-        Owner owner2 = new Owner(202, "Bob", "+77012345678", 1);
+            switch (choice) {
+                case 1: addPet(); break;
+                case 2: viewAllPets(); break;
+                case 3: demonstratePolymorphism(); break;
+                case 4: viewByType(); break;
+                case 0: running = false; System.out.println("Exiting..."); break;
+                default: System.out.println("Invalid choice!");
+            }
 
-        // Create Veterinarian objects
-        Veterinarian vet1 = new Veterinarian(301, "Dr. Smith", "Surgery", 6);
-        Veterinarian vet2 = new Veterinarian(302, "Dr. Johnson", "Dentistry", 2);
+            if (running) {
+                System.out.println("\nPress Enter to continue...");
+                scanner.nextLine();
+            }
+        }
+        scanner.close();
+    }
 
-        // Test additional methods
-        owner1.addPet();
-        System.out.println("Owner1 is frequent client? " + owner1.isFrequentClient());
-        System.out.println("Pet2 life stage: " + pet2.getLifeStage());
-        System.out.println("Vet1 can treat? " + vet1.canTreat());
+    private static void displayMenu() {
+        System.out.println("\n===============================");
+        System.out.println("       VET CLINIC SYSTEM       ");
+        System.out.println("===============================");
+        System.out.println("1. Add Pet (Cat/Dog)");
+        System.out.println("2. View All Pets");
+        System.out.println("3. Demonstrate Polymorphism");
+        System.out.println("4. View by Type");
+        System.out.println("0. Exit");
+        System.out.println("===============================");
+        System.out.print("Enter your choice: ");
+    }
 
-        // Display all objects
-        System.out.println("\n--- PETS ---");
-        System.out.println(pet1);
-        System.out.println(pet2);
-        System.out.println(pet3);
+    private static void addPet() {
+        System.out.print("Enter type (Cat/Dog): ");
+        String type = scanner.nextLine();
+        System.out.print("Enter name: ");
+        String name = scanner.nextLine();
+        System.out.print("Enter age: ");
+        int age = scanner.nextInt();
+        scanner.nextLine();
+        System.out.print("Enter owner name: ");
+        String owner = scanner.nextLine();
 
-        System.out.println("\n--- OWNERS ---");
-        System.out.println(owner1);
-        System.out.println(owner2);
+        if (type.equalsIgnoreCase("Cat")) {
+            System.out.print("Is indoor? (true/false): ");
+            boolean indoor = scanner.nextBoolean();
+            scanner.nextLine();
+            pets.add(new Cat(name, age, "Cat", owner, indoor));
+        } else if (type.equalsIgnoreCase("Dog")) {
+            System.out.print("Is trained? (true/false): ");
+            boolean trained = scanner.nextBoolean();
+            scanner.nextLine();
+            pets.add(new Dog(name, age, "Dog", owner, trained));
+        } else {
+            System.out.println("Unknown type! Pet not added.");
+        }
+        System.out.println("Pet added successfully!");
+    }
 
-        System.out.println("\n--- VETERINARIANS ---");
-        System.out.println(vet1);
-        System.out.println(vet2);
+    private static void viewAllPets() {
+        System.out.println("\n--- ALL PETS ---");
+        if (pets.isEmpty()) {
+            System.out.println("No pets found.");
+            return;
+        }
+        for (Pet pet : pets) {
+            System.out.println(pet);
+        }
+    }
 
-        System.out.println("\n=== Program Complete ===");
+    private static void demonstratePolymorphism() {
+        System.out.println("\n--- POLYMORPHISM DEMO ---");
+        for (Pet pet : pets) {
+            pet.makeSound(); // Different behavior for Cat/Dog
+        }
+    }
+
+    private static void viewByType() {
+        System.out.print("Enter type to view (Cat/Dog): ");
+        String type = scanner.nextLine();
+        for (Pet pet : pets) {
+            if (type.equalsIgnoreCase("Cat") && pet instanceof Cat) System.out.println(pet);
+            else if (type.equalsIgnoreCase("Dog") && pet instanceof Dog) System.out.println(pet);
+        }
     }
 }

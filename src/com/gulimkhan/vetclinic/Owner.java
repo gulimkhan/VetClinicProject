@@ -1,37 +1,39 @@
-package com.gulimkhan.vetclinic;
+package com.gulimkhan;
 
 public class Owner {
-    private int ownerId;
     private String name;
     private String phone;
-    private int numberOfPets;
 
-    public Owner(int ownerId, String name, String phone, int numberOfPets) {
-        this.ownerId = ownerId;
-        this.name = name;
-        this.phone = phone;
-        this.numberOfPets = numberOfPets;
+    public Owner(String name, String phone) {
+        setName(name);
+        setPhone(phone);
     }
 
-    public int getOwnerId() { return ownerId; }
-    public void setOwnerId(int ownerId) { this.ownerId = ownerId; }
-
+    // Getters
     public String getName() { return name; }
-    public void setName(String name) { this.name = name; }
-
     public String getPhone() { return phone; }
-    public void setPhone(String phone) { this.phone = phone; }
 
-    public int getNumberOfPets() { return numberOfPets; }
-    public void setNumberOfPets(int numberOfPets) { this.numberOfPets = numberOfPets; }
+    // Setters with validation
+    public void setName(String name) {
+        if(name != null && !name.trim().isEmpty()) {
+            this.name = name;
+        } else {
+            System.out.println("Warning: Owner name cannot be empty! Setting to 'Unknown'.");
+            this.name = "Unknown";
+        }
+    }
 
-    // Additional methods
-    public void addPet() { this.numberOfPets++; }
-    public boolean isFrequentClient() { return numberOfPets > 3; }
+    public void setPhone(String phone) {
+        if(phone != null && phone.contains("+") && phone.length() >= 10) {
+            this.phone = phone;
+        } else {
+            System.out.println("Warning: Invalid phone number! Setting to '+0000000000'.");
+            this.phone = "+0000000000";
+        }
+    }
 
     @Override
     public String toString() {
-        return "Owner{id=" + ownerId + ", name='" + name + "', phone='" + phone +
-                "', pets=" + numberOfPets + "}";
+        return name + " (Phone: " + phone + ")";
     }
 }

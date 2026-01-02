@@ -1,46 +1,56 @@
-package com.gulimkhan.vetclinic;
+package com.gulimkhan;
 
 public class Pet {
-    private int petId;
-    private String name;
-    private String species;
-    private int age;
-    private String ownerName;
+    protected String name;
+    protected int age;
+    protected String type;
+    protected String ownerName;
 
-    public Pet(int petId, String name, String species, int age, String ownerName) {
-        this.petId = petId;
-        this.name = name;
-        this.species = species;
-        this.age = age;
-        this.ownerName = ownerName;
+    public Pet(String name, int age, String type, String ownerName) {
+        setName(name);
+        setAge(age);
+        setType(type);
+        setOwnerName(ownerName);
     }
 
-    // Getters and Setters
-    public int getPetId() { return petId; }
-    public void setPetId(int petId) { this.petId = petId; }
+    // Validation in setters
+    public void setName(String name) {
+        if (name != null && !name.trim().isEmpty()) this.name = name;
+        else this.name = "Unknown";
+    }
 
-    public String getName() { return name; }
-    public void setName(String name) { this.name = name; }
+    public void setAge(int age) {
+        if (age >= 0) this.age = age;
+        else this.age = 0;
+    }
 
-    public String getSpecies() { return species; }
-    public void setSpecies(String species) { this.species = species; }
+    public void setType(String type) {
+        if (type != null && !type.trim().isEmpty()) this.type = type;
+        else this.type = "Unknown";
+    }
 
-    public int getAge() { return age; }
-    public void setAge(int age) { this.age = age; }
+    public void setOwnerName(String ownerName) {
+        if (ownerName != null && !ownerName.trim().isEmpty()) this.ownerName = ownerName;
+        else this.ownerName = "Unknown";
+    }
 
-    public String getOwnerName() { return ownerName; }
-    public void setOwnerName(String ownerName) { this.ownerName = ownerName; }
+    public String getRole() {
+        return "Pet";
+    }
 
-    // Additional methods
-    public String getLifeStage() {
-        if (age < 2) return "Young";
-        else if (age <= 7) return "Adult";
-        else return "Senior";
+    public void makeSound() {
+        System.out.println(name + " makes a sound.");
+    }
+
+    public boolean isAdult() {
+        return age >= 1;
     }
 
     @Override
     public String toString() {
-        return "Pet{id=" + petId + ", name='" + name + "', species='" + species +
-                "', age=" + age + ", owner='" + ownerName + "', lifeStage='" + getLifeStage() + "'}";
+        return "[" + getRole() + "] " + name +
+                " | Type: " + type +
+                " | Age: " + age +
+                " | Owner: " + ownerName;
     }
 }
