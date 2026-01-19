@@ -9,8 +9,9 @@ public class ClinicMenu implements Menu {
     private Scanner scanner = new Scanner(System.in);
 
     public ClinicMenu() {
+        // Sample pets
         pets.add(new Dog("Sharik", 5, "Asel", "Golden Retriever", true));
-        pets.add(new Cat("Barsik", 3, "Aida", "White", true));
+        pets.add(new Cat("Barsik", 3, "Aida", "White", false));
     }
 
     @Override
@@ -20,6 +21,7 @@ public class ClinicMenu implements Menu {
         System.out.println("2. Add Cat");
         System.out.println("3. Show All Pets");
         System.out.println("4. Make All Pets Sound");
+        System.out.println("5. Play with All Pets");
         System.out.println("0. Exit");
     }
 
@@ -36,12 +38,11 @@ public class ClinicMenu implements Menu {
                     case 2: addCat(); break;
                     case 3: showAllPets(); break;
                     case 4: makeAllSound(); break;
+                    case 5: playWithAll(); break;
                     case 0: running = false; break;
                     default: System.out.println("Invalid choice!");
                 }
-            } catch(Exception e) {
-                System.out.println("Error: " + e.getMessage());
-            }
+            } catch(Exception e) { System.out.println("Error: " + e.getMessage()); }
         }
     }
 
@@ -51,12 +52,10 @@ public class ClinicMenu implements Menu {
             System.out.print("Age: "); int age = Integer.parseInt(scanner.nextLine());
             System.out.print("Owner: "); String owner = scanner.nextLine();
             System.out.print("Breed: "); String breed = scanner.nextLine();
-            System.out.print("Trained? (true/false): "); boolean trained = Boolean.parseBoolean(scanner.nextLine());
+            System.out.print("Trained (true/false): "); boolean trained = Boolean.parseBoolean(scanner.nextLine());
             pets.add(new Dog(name, age, owner, breed, trained));
             System.out.println("Dog added!");
-        } catch(Exception e) {
-            System.out.println("Error: " + e.getMessage());
-        }
+        } catch(Exception e) { System.out.println("Error: " + e.getMessage()); }
     }
 
     private void addCat() {
@@ -65,21 +64,26 @@ public class ClinicMenu implements Menu {
             System.out.print("Age: "); int age = Integer.parseInt(scanner.nextLine());
             System.out.print("Owner: "); String owner = scanner.nextLine();
             System.out.print("Color: "); String color = scanner.nextLine();
-            System.out.print("Indoor? (true/false): "); boolean indoor = Boolean.parseBoolean(scanner.nextLine());
+            System.out.print("Indoor (true/false): "); boolean indoor = Boolean.parseBoolean(scanner.nextLine());
             pets.add(new Cat(name, age, owner, color, indoor));
             System.out.println("Cat added!");
-        } catch(Exception e) {
-            System.out.println("Error: " + e.getMessage());
-        }
+        } catch(Exception e) { System.out.println("Error: " + e.getMessage()); }
     }
 
     private void showAllPets() {
-        System.out.println("--- ALL PETS ---");
+        System.out.println("\n--- ALL PETS ---");
         for(Pet p : pets) System.out.println(p);
     }
 
     private void makeAllSound() {
-        System.out.println("--- PETS SOUNDS ---");
+        System.out.println("\n--- PETS SOUNDS ---");
         for(Pet p : pets) p.makeSound();
+    }
+
+    private void playWithAll() {
+        System.out.println("\n--- PLAYING WITH PETS ---");
+        for(Pet p : pets) {
+            if(p instanceof Playable) ((Playable)p).play();
+        }
     }
 }

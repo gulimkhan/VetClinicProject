@@ -12,20 +12,20 @@ public class Dog extends Pet implements Playable {
 
     @Override
     public void makeSound() {
-        System.out.println(name + " says: Woof Woof!");
+        System.out.println(name + " barks: Woof Woof!");
     }
 
     @Override
     public String getRole() { return "Dog"; }
 
+    // Playable methods
     @Override
-    public void play() {
-        System.out.println(name + " plays fetch!");
-    }
+    public void play() { System.out.println(name + " is playing fetch!"); }
 
     @Override
     public String favoriteToy() { return "Ball"; }
 
+    // Getters/Setters
     public String getBreed() { return breed; }
     public void setBreed(String breed) { this.breed = breed; }
 
