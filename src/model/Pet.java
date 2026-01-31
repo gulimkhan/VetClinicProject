@@ -31,6 +31,14 @@ public abstract class Pet {
         this.age = age;
     }
 
+    public String getOwnerName() {
+        return ownerName;
+    }
+
+    public String getSpecies() {
+        return species;
+    }
+
     @Override
     public String toString() {
         return species + " " + name + ", Age: " + age + ", Owner: " + ownerName;
