@@ -16,9 +16,14 @@ public class ClinicMenu implements Menu {
         System.out.println("1. Add Dog");
         System.out.println("2. Add Cat");
         System.out.println("3. Show All Pets");
-        System.out.println("4. Update Pet");
-        System.out.println("5. Delete Pet");
-        System.out.println("6. Search Pet by Name");
+        System.out.println("4. Show Dogs Only");
+        System.out.println("5. Show Cats Only");
+        System.out.println("6. Update Pet");
+        System.out.println("7. Delete Pet");
+        System.out.println("8. Search by Name");
+        System.out.println("9. Search by Age Range");
+        System.out.println("10. Search by Min Age");
+        System.out.println("11. Polymorphism Demo");
         System.out.println("0. Exit");
     }
 
@@ -34,10 +39,16 @@ public class ClinicMenu implements Menu {
                 case 1 -> addDog();
                 case 2 -> addCat();
                 case 3 -> showAll();
-                case 4 -> updatePet();
-                case 5 -> deletePet();
-                case 6 -> searchPet();
+                case 4 -> showDogsOnly();
+                case 5 -> showCatsOnly();
+                case 6 -> updatePet();
+                case 7 -> deletePet();
+                case 8 -> searchByName();
+                case 9 -> searchByAgeRange();
+                case 10 -> searchByMinAge();
+                case 11 -> polymorphismDemo();
                 case 0 -> running = false;
+                default -> System.out.println("Invalid choice!");
             }
         }
     }
@@ -51,7 +62,7 @@ public class ClinicMenu implements Menu {
         String owner = scanner.nextLine();
         System.out.print("Breed: ");
         String breed = scanner.nextLine();
-        System.out.print("Trained: ");
+        System.out.print("Trained (true/false): ");
         boolean trained = Boolean.parseBoolean(scanner.nextLine());
 
         petDAO.insertPet(new Dog(name, age, owner, breed, trained));
@@ -66,20 +77,30 @@ public class ClinicMenu implements Menu {
         String owner = scanner.nextLine();
         System.out.print("Color: ");
         String color = scanner.nextLine();
-        System.out.print("Indoor: ");
+        System.out.print("Indoor (true/false): ");
         boolean indoor = Boolean.parseBoolean(scanner.nextLine());
 
         petDAO.insertPet(new Cat(name, age, owner, color, indoor));
     }
 
     private void showAll() {
-        for (Pet p : petDAO.getAllPets()) {
-            System.out.println(p);
-        }
+        petDAO.getAllPets().forEach(System.out::println);
+    }
+
+    private void showDogsOnly() {
+        petDAO.getAllPets().stream()
+                .filter(p -> p instanceof Dog)
+                .forEach(System.out::println);
+    }
+
+    private void showCatsOnly() {
+        petDAO.getAllPets().stream()
+                .filter(p -> p instanceof Cat)
+                .forEach(System.out::println);
     }
 
     private void updatePet() {
-        System.out.print("Pet ID: ");
+        System.out.print("Pet ID to update: ");
         int id = Integer.parseInt(scanner.nextLine());
         System.out.print("New Name: ");
         String name = scanner.nextLine();
@@ -88,10 +109,11 @@ public class ClinicMenu implements Menu {
         System.out.print("New Owner: ");
         String owner = scanner.nextLine();
 
-        if (petDAO.updatePet(id, name, age, owner))
-            System.out.println("Updated successfully ");
-        else
-            System.out.println("Update failed ");
+        if (petDAO.updatePet(id, name, age, owner)) {
+            System.out.println("Updated successfully ✅");
+        } else {
+            System.out.println("Update failed ❌");
+        }
     }
 
     private void deletePet() {
@@ -99,15 +121,38 @@ public class ClinicMenu implements Menu {
         int id = Integer.parseInt(scanner.nextLine());
         System.out.print("Are you sure? (yes/no): ");
         if (scanner.nextLine().equalsIgnoreCase("yes")) {
-            petDAO.deletePet(id);
+            if (petDAO.deletePet(id)) {
+                System.out.println("Deleted successfully ✅");
+            } else {
+                System.out.println("Delete failed ❌");
+            }
         }
     }
 
-    private void searchPet() {
-        System.out.print("Search name: ");
+    private void searchByName() {
+        System.out.print("Search Name: ");
         String name = scanner.nextLine();
-        for (Pet p : petDAO.searchByName(name)) {
-            System.out.println(p);
-        }
+        petDAO.searchByName(name).forEach(System.out::println);
+    }
+
+    private void searchByAgeRange() {
+        System.out.print("Min Age: ");
+        int min = Integer.parseInt(scanner.nextLine());
+        System.out.print("Max Age: ");
+        int max = Integer.parseInt(scanner.nextLine());
+        petDAO.searchByAgeRange(min, max).forEach(System.out::println);
+    }
+
+    private void searchByMinAge() {
+        System.out.print("Min Age: ");
+        int min = Integer.parseInt(scanner.nextLine());
+        petDAO.searchByMinAge(min).forEach(System.out::println);
+    }
+
+    private void polymorphismDemo() {
+        petDAO.getAllPets().forEach(p -> {
+            p.makeSound();
+            if (p instanceof Playable playable) playable.play();
+        });
     }
 }

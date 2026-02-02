@@ -5,7 +5,7 @@ public class TestSelect {
 
         PetDAO dao = new PetDAO();
 
-        // Барлық Pet-терді шығарамыз
+
         dao.getAllPets();
 
         System.out.println("TestSelect completed!");
